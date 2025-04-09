@@ -1,0 +1,22 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"  # Exponer el puerto 3000 para el backend
+    depends_on:
+      - db  # Asegura que el servicio db se levante antes que el backend
+    environment:
+      - MONGO_URI=mongodb://db:27017/mi_base_de_datos  # URI de conexión a MongoDB
+    networks:
+      - app-network
+
+  db:
+    image: mongo:latest  # Utiliza la imagen oficial de MongoDB
+    ports:
+      - "27017:27017"  # Exponer el puerto de MongoDB
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge  # Define una red puente para los contenedores
